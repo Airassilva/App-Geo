@@ -26,7 +26,7 @@ import { requestForegroundPermissionsAsync,
 export default function App() {
   // State para armazenar a localização atual do usuário
   const [location , setLocation] = useState<LocationObject | null>(null);
-  const [coordinates, setCoordinates] = useState([])
+  const [coordinates, setCoordinates] = useState([]) //para obter coordenadas assincronas
   //referencia ao mapview para acessar o animateCamera
   const mapRef = useRef<MapView>(null);
     const origin = {latitude:-8.05263 , longitude:-34.88515};
@@ -65,9 +65,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchData() { //busca as coordenadas dos dados da api
       const coordinates = await dados();
-      setCoordinates(coordinates)
+      setCoordinates(coordinates) //atualiza os dados com as coordenadas obtidas
     }
     fetchData();
   }, []);
@@ -88,11 +88,11 @@ export default function App() {
           }}
         >
         <MapViewDirections
-          origin={origin}
+          origin={origin} 
           destination={destination}
           apikey={config.googleApi} // insert your API Key here
           strokeWidth={4}
-          mode='WALKING'
+          mode='WALKING' //tipo de rota que será traçada
           strokeColor="#111111"
         />
           <Marker
@@ -104,7 +104,7 @@ export default function App() {
            {coordinates.map(marker => (
             <Marker 
               coordinate={marker}
-              onPress={()=> setDestination(marker)}
+              onPress={()=> setDestination(marker)} //Ao clicar no ícone,chama a função onPress que atualiza com as novas coordenadas e renderiza uma rota
               image = {require('./assets/bicicleta.png')}
             />
            ))}
