@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import MapView, {Marker} from 'react-native-maps'
 import { Button, View } from 'react-native'; 
 import { styles } from './styles';
+import MapViewDirections from 'react-native-maps-directions';
+import config from './config/index.json';
 import { requestForegroundPermissionsAsync,  
          getCurrentPositionAsync,            
          LocationObject,                     
@@ -10,11 +12,25 @@ import { requestForegroundPermissionsAsync,
         } from 'expo-location'
 
 
+ async function dados(){
+  const resposta = await fetch ("http://dados.recife.pe.gov.br/api/3/action/datastore_search?resource_id=e6e4ac72-ff15-4c5a-b149-a1943386c031").then((res)=>res.json())
+  //console.log(resposta.result.records[0])
+  let teste = []
+  for (let i=0; i<resposta.result.records.length; i++){
+    teste.push({latitude: resposta.result.records[i].latitude,longitude:resposta.result.records[i].longitude})
+  //console.log(resposta.result.records[i].latitude)
+  }
+  return teste
+}
+
 export default function App() {
   // State para armazenar a localização atual do usuário
   const [location , setLocation] = useState<LocationObject | null>(null);
+  const [coordinates, setCoordinates] = useState([])
   //referencia ao mapview para acessar o animateCamera
   const mapRef = useRef<MapView>(null);
+    const origin = {latitude:-8.05263 , longitude:-34.88515};
+    const [destination, setDestination] = useState ({latitude: -8.06011, longitude: -34.88528});
 
   //função para solicitar permissão de localização
   async function requestPermissionLocation() {
@@ -25,6 +41,7 @@ export default function App() {
       const currentPosition = await getCurrentPositionAsync();
       setLocation(currentPosition);
     }
+   //console.log(await dados())
   }
   //ao montar o componente, solicitar permissão de localização
   useEffect(() => {
@@ -46,6 +63,15 @@ export default function App() {
        })
     });
   }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      const coordinates = await dados();
+      setCoordinates(coordinates)
+    }
+    fetchData();
+  }, []);
+
     //renderizar mapview com a localização do usuário e um marcador
   return (
     <View style={styles.container}>
@@ -61,15 +87,29 @@ export default function App() {
             longitudeDelta: 0.005
           }}
         >
+        <MapViewDirections
+          origin={origin}
+          destination={destination}
+          apikey={config.googleApi} // insert your API Key here
+          strokeWidth={4}
+          mode='WALKING'
+          strokeColor="#111111"
+        />
           <Marker
           coordinate={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
           }}
           />
+           {coordinates.map(marker => (
+            <Marker 
+              coordinate={marker}
+              onPress={()=> setDestination(marker)}
+              image = {require('./assets/bicicleta.png')}
+            />
+           ))}
         </MapView>
       }
-      <Button title="Calcular Rota" />
     </View>
   );
 }
