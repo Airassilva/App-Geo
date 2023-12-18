@@ -5,6 +5,9 @@ O ExpoBike pega os dados de localização de estações de bikes de Recife e os 
 
 Instalações necessárias para dar start no ExpoBike:
 
+-npm install // para instalar as dependências do node-modules
+
+
 -npx expo install expo-location // para pegar a localização do usuário em tempo real
 
 
@@ -12,3 +15,6 @@ Instalações necessárias para dar start no ExpoBike:
 
 
 -npm install react-native-maps-directions // MapViewDirections para criar rotas com a api do google
+
+
+-Add sua chave de api do google directions para renderizar as rotas
