@@ -17,4 +17,4 @@ Instalações necessárias para dar start no ExpoBike:
 -npm install react-native-maps-directions // MapViewDirections para criar rotas com a api do google
 
 
--Add sua chave de api do google directions para renderizar as rotas
+-Add sua chave de api do google directions na pasta config para renderizar as rotas
