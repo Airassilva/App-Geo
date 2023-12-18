@@ -18,3 +18,6 @@ Instalações necessárias para dar start no ExpoBike:
 
 
 -Add sua chave de api do google directions na pasta config para renderizar as rotas
+
+
+De: AIRA SOARES DA SILVA
