@@ -29,7 +29,6 @@ export default function App() {
   const [coordinates, setCoordinates] = useState([]) //para obter coordenadas assincronas
   //referencia ao mapview para acessar o animateCamera
   const mapRef = useRef<MapView>(null);
-    const origin = {latitude:-8.05263 , longitude:-34.88515};
     const [destination, setDestination] = useState ({latitude: -8.06011, longitude: -34.88528});
 
   //função para solicitar permissão de localização
@@ -71,6 +70,10 @@ export default function App() {
     }
     fetchData();
   }, []);
+    let origin = null;
+      if (location && location.coords) {
+       origin = { latitude: location.coords.latitude, longitude: location.coords.longitude }; //define a origin como a localização do usuário
+    }
 
     //renderizar mapview com a localização do usuário e um marcador
   return (
