@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import MapView, {Marker} from 'react-native-maps'
-import { Button, View } from 'react-native'; 
+import { View } from 'react-native'; 
 import { styles } from './styles';
 import MapViewDirections from 'react-native-maps-directions';
 import config from './config/index.json';
